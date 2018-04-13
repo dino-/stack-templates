@@ -1,0 +1,173 @@
+{-# START_FILE package.yaml #-}
+name: {{name}}
+version: '1.0'
+#synopsis:
+#description:
+license: ISC
+author: {{author-name}}{{^author-name}}Author name here{{/author-name}}
+maintainer: {{author-email}}{{^author-email}}example@example.com{{/author-email}}
+copyright: {{year}}{{^year}}2018{{/year}} {{author-name}}{{^author-name}}Author name here{{/author-name}}
+category: {{category}}{{^category}}Unclassified{{/category}}
+extra-source-files:
+- changelog.md
+- package.yaml
+- README.md
+#- stack.yaml
+
+github: {{github-username}}/{{name}}
+
+ghc-options:
+- -fwarn-tabs
+- -Wall
+- -Wcompat
+- -Werror
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wredundant-constraints
+
+default-extensions:
+- BangPatterns
+- DeriveFoldable
+- DeriveFunctor
+- DeriveGeneric
+- DeriveLift
+- DeriveTraversable
+- EmptyCase
+- FlexibleContexts
+- FlexibleInstances
+- GeneralizedNewtypeDeriving
+- InstanceSigs
+- KindSignatures
+- LambdaCase
+- MultiParamTypeClasses
+- MultiWayIf
+- NamedFieldPuns
+- OverloadedStrings
+- ScopedTypeVariables
+- StandaloneDeriving
+- TupleSections
+
+dependencies:
+- base
+
+library:
+  source-dirs: src/lib
+  dependencies: []
+
+executables:
+  {{name}}:
+    source-dirs: src/{{name}}
+    main: Main.hs
+    dependencies:
+    - {{name}}
+
+tests:
+  {{name}}-test-suite:
+    source-dirs: src/test
+    main: Main.hs
+    dependencies:
+    - {{name}}
+    - tasty
+    - tasty-hspec
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+
+{-# START_FILE .gitignore #-}
+# Stack uses this directory as scratch space.
+/.stack-work/
+
+# Stack generates the Cabal file from `package.yaml` through hpack.
+/*.cabal
+
+{-# START_FILE Setup.hs #-}
+import Distribution.Simple
+main = defaultMain
+
+{-# START_FILE src/lib/Example.hs #-}
+-- | An example module.
+module Example
+  ( example
+  ) where
+
+
+example :: IO ()
+example = putStrLn "example"
+
+{-# START_FILE src/{{name}}/Main.hs #-}
+-- It is generally a good idea to keep all your business logic in your library
+-- and only use it in the executable. Doing so allows others to use what you
+-- wrote in their libraries.
+import Example ( example )
+
+
+main :: IO ()
+main = do
+  example
+
+{-# START_FILE src/test/Main.hs #-}
+-- Tasty makes it easy to test your code. It is a test framework that can
+-- combine many different types of tests into one suite. See its website for
+-- help: <http://documentup.com/feuerbach/tasty>.
+import qualified Test.Tasty
+-- Hspec is one of the providers for Tasty. It provides a nice syntax for
+-- writing tests. Its website has more info: <https://hspec.github.io>.
+import Test.Tasty.Hspec
+
+main :: IO ()
+main = do
+  test <- testSpec "{{name}}" spec
+  Test.Tasty.defaultMain test
+
+spec :: Spec
+spec = parallel $ do
+  it "is trivially true" $ do
+    True `shouldBe` True
+
+{-# START_FILE changelog.md #-}
+1.1 (2018-03-17)
+
+  * Another change
+
+
+1.0 (2018-03-16)
+
+  * Some change that was made
+  * Blah blah blah
+
+{-# START_FILE README.md #-}
+# {{name}}
+
+
+## Synopsis
+
+
+## Description
+
+
+## Getting source
+
+Source code is available from github at the [{{name}}](https://github.com/{{github-username}}{{^github-username}}githubuser{{/github-username}}/{{name}}) project page.
+
+
+## Contact
+
+{{author-name}}{{^author-name}}Author name here{{/author-name}} <{{author-email}}{{^author-email}}example@example.com{{/author-email}}>
+
+{-# START_FILE LICENSE #-}
+Copyright (c) {{year}}{{^year}}2018{{/year}}, {{author-name}}{{^author-name}}Author name here{{/author-name}} <{{author-email}}{{^author-email}}Author email here{{/author-email}}>
+
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA
+OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
