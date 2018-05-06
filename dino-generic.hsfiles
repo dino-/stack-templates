@@ -126,15 +126,9 @@ spec = parallel $ do
     True `shouldBe` True
 
 {-# START_FILE changelog.md #-}
-1.1 (2018-03-17)
+1.0 (2018-05-06)
 
-  * Another change
-
-
-1.0 (2018-03-16)
-
-  * Some change that was made
-  * Blah blah blah
+  * Initial release
 
 {-# START_FILE README.md #-}
 # {{name}}
