@@ -48,7 +48,7 @@ default-extensions:
 - TupleSections
 
 dependencies:
-- base
+- base >=3 && <5
 
 library:
   source-dirs: src/lib
