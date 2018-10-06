@@ -10,6 +10,7 @@ copyright: {{year}}{{^year}}2018{{/year}} {{author-name}}{{^author-name}}Author 
 category: {{category}}{{^category}}Unclassified{{/category}}
 extra-source-files:
 - changelog.md
+- .gitignore
 - package.yaml
 - README.md
 #- stack.yaml
