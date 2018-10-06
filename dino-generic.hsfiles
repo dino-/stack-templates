@@ -20,7 +20,7 @@ ghc-options:
 - -fwarn-tabs
 - -Wall
 - -Wcompat
-- -Werror
+# - -Werror  # Around the time of lts-12.11, this is no longer recommended
 - -Wincomplete-record-updates
 - -Wincomplete-uni-patterns
 - -Wredundant-constraints
