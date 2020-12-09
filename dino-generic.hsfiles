@@ -24,6 +24,7 @@ ghc-options:
 # - -Werror  # Around the time of lts-12.11, this is no longer recommended
 - -Wincomplete-record-updates
 - -Wincomplete-uni-patterns
+- -Wpartial-fields
 - -Wredundant-constraints
 
 default-extensions:
