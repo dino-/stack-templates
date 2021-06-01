@@ -44,6 +44,7 @@ default-extensions:
 - MultiParamTypeClasses
 - MultiWayIf
 - NamedFieldPuns
+- NumericUnderscores
 - OverloadedStrings
 - ScopedTypeVariables
 - StandaloneDeriving
