@@ -70,9 +70,9 @@ tests:
     main: Main.hs
     dependencies:
     - {{name}}
-    - hspec
     - tasty
-    - tasty-hspec
+    - tasty-hunit
+    - tasty-quickcheck
     ghc-options:
     - -rtsopts
     - -threaded
@@ -108,23 +108,34 @@ main = do
 
 {-# START_FILE src/test/Main.hs #-}
 -- Tasty makes it easy to test your code. It is a test framework that can
--- combine many different types of tests into one suite. See its website for
--- help: <http://documentup.com/feuerbach/tasty>.
-import qualified Test.Tasty
--- Hspec is one of the providers for Tasty. It provides a nice syntax for
--- writing tests. Its website has more info: <https://hspec.github.io>.
-import Test.Hspec
-import Test.Tasty.Hspec
+-- combine many different types of tests into one suite and has great output.
+-- See its website for help:
+-- <https://github.com/UnkindPartition/tasty>
+
+import Test.Tasty
+import Test.Tasty.HUnit
+import Test.Tasty.QuickCheck
+
 
 main :: IO ()
-main = do
-  test <- testSpec "{{name}}" spec
-  Test.Tasty.defaultMain test
+main = defaultMain $ testGroup " tests"
+  [ unitTests
+  , quickcheckProperties
+  ]
 
-spec :: Spec
-spec = parallel $ do
-  it "is trivially true" $ do
-    True `shouldBe` True
+
+unitTests :: TestTree
+unitTests = testGroup "unit tests"
+  [ testCase "True is True" $
+      True @=? True
+  ]
+
+
+quickcheckProperties :: TestTree
+quickcheckProperties = testGroup "quickcheck properties"
+  [ testProperty "reverse twice results in the same list" $
+      ((\l -> (reverse . reverse $ l) == l) :: [Char] -> Bool)
+  ]
 
 {-# START_FILE CHANGELOG.md #-}
 1.0 (YYYY-MM-DD)
