@@ -201,13 +201,12 @@ pkgs.mkShell {
   # - nix: Enable Nix support
   # - no-nix-pure: Pass environment variables, like `NIX_PATH`
   # - nix-shell-file: Specify the Nix file to use (otherwise it uses `shell.nix` by default)
-  # - system-ghc: Prevent stack from downloading its own ghc
   #
   # Configure the Nix path to our own `pkgs`, to ensure Stack-with-Nix uses the correct one rather than the global <nixpkgs> when looking for the right `ghc` argument to pass in `nix/stack-integration.nix`
   # See https://nixos.org/nixos/nix-pills/nix-search-paths.html for more information
   shellHook =
     ''
-      alias stack='stack --nix --no-nix-pure --nix-shell-file=nix/stack-integration.nix --system-ghc'
+      alias stack='stack --nix --no-nix-pure --nix-shell-file=nix/stack-integration.nix'
       NIX_PATH="nixpkgs=${pkgs.path}"
     '';
 }
