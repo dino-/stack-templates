@@ -159,18 +159,9 @@ Source code is available from github at the [{{name}}](https://github.com/{{gith
 This project builds with stack. It can be used with or without nix and uses
 classic nix-shell.
 
-To use it with nix, make sure you have nix installed on your system and **THIS
-IS VERY IMPORTANT** have the IOG caches set. Make sure the following is in
-either `$HOME/.config/nix/nix.conf` or, if you have nix installed multi-user,
-`/etc/nix.conf`
+To use it with nix, make sure you have nix installed on your system.
 
----
-extra-experimental-features = flakes nix-command
-substituters = https://hydra.iohk.io https://iohk.cachix.org https://cache.nixos.org/
-trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= iohk.cachix.org-1:DpRUyj7h7V830dp/i6Nti+NEO2/nhblbov/8MW7Rqoo= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
----
-
-Start the nix develop shell from the project's top-level directory:
+Start the nix shell from the project's top-level directory:
 
     $ nix-shell
     [nix-shell] $ stack build
