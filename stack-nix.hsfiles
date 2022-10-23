@@ -1,0 +1,253 @@
+{-# START_FILE package.yaml #-}
+name: {{name}}
+version: '1.0'
+# synopsis:
+# description:
+license: ISC
+author: {{author-name}}{{^author-name}}Author name here{{/author-name}}
+maintainer: {{author-email}}{{^author-email}}example@example.com{{/author-email}}
+copyright: {{year}}{{^year}}2022{{/year}} {{author-name}}{{^author-name}}Author name here{{/author-name}}
+category: {{category}}{{^category}}Unclassified{{/category}}
+extra-source-files:
+- CHANGELOG.md
+- .gitignore
+- package.yaml
+- README.md
+# - stack.yaml
+
+github: {{github-username}}/{{name}}
+
+ghc-options:
+- -fwarn-tabs
+- -Wall
+- -Wcompat
+# - -Werror  # Around the time of lts-12.11 (ghc < 8.4.3), this is no longer recommended
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wpartial-fields
+- -Wredundant-constraints
+
+default-extensions:
+- BangPatterns
+- DeriveFoldable
+- DeriveFunctor
+- DeriveGeneric
+- DeriveLift
+- DeriveTraversable
+- EmptyCase
+- FlexibleContexts
+- FlexibleInstances
+- GeneralizedNewtypeDeriving
+- InstanceSigs
+- KindSignatures
+- LambdaCase
+- MultiParamTypeClasses
+- MultiWayIf
+- NamedFieldPuns
+- NumericUnderscores
+- OverloadedStrings
+- ScopedTypeVariables
+- StandaloneDeriving
+- TupleSections
+
+dependencies:
+- base >=3 && <5
+
+library:
+  source-dirs: src/lib
+  dependencies: []
+
+executables:
+  {{name}}:
+    source-dirs: src/app
+    main: Main.hs
+    dependencies:
+    - {{name}}
+
+tests:
+  {{name}}-test-suite:
+    source-dirs: src/test
+    main: Main.hs
+    dependencies:
+    - {{name}}
+    - tasty
+    - tasty-hunit
+    - tasty-quickcheck
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+
+{-# START_FILE .gitignore #-}
+# stack uses this directory for build artifacts
+/.stack-work/
+
+# stack generates the cabal file from `package.yaml` with hpack
+/*.cabal
+
+{-# START_FILE src/lib/Example.hs #-}
+-- | An example module.
+module Example
+  ( example
+  ) where
+
+
+example :: IO ()
+example = putStrLn "example"
+
+{-# START_FILE src/app/Main.hs #-}
+-- It is generally a good idea to keep all your business logic in your library
+-- and only use it in the executable. Doing so allows others to use what you
+-- wrote in their libraries.
+import Example ( example )
+
+
+main :: IO ()
+main = do
+  example
+
+{-# START_FILE src/test/Main.hs #-}
+-- Tasty makes it easy to test your code. It is a test framework that can
+-- combine many different types of tests into one suite and has great output.
+-- See its website for help:
+-- <https://github.com/UnkindPartition/tasty>
+
+import Test.Tasty
+import Test.Tasty.HUnit
+import Test.Tasty.QuickCheck
+
+
+main :: IO ()
+main = defaultMain $ testGroup " tests"
+  [ unitTests
+  , quickcheckProperties
+  ]
+
+
+unitTests :: TestTree
+unitTests = testGroup "unit tests"
+  [ testCase "True is True" $
+      True @=? True
+  ]
+
+
+quickcheckProperties :: TestTree
+quickcheckProperties = testGroup "quickcheck properties"
+  [ testProperty "reverse twice results in the same list" $
+      ((\l -> (reverse . reverse $ l) == l) :: [Char] -> Bool)
+  ]
+
+{-# START_FILE CHANGELOG.md #-}
+1.0 (YYYY-MM-DD)
+
+  * Initial release
+
+{-# START_FILE README.md #-}
+# {{name}}
+
+
+## Synopsis
+
+
+## Description
+
+
+## Getting source
+
+Source code is available from github at the [{{name}}](https://github.com/{{github-username}}{{^github-username}}githubuser{{/github-username}}/{{name}}) project page.
+
+This project builds with stack. It can be used with or without nix and uses nix
+flakes.
+
+To use it with nix, make sure you have nix installed on your system and **THIS
+IS VERY IMPORTANT** have the IOG caches set. Make sure the following is in
+either `$HOME/.config/nix/nix.conf` or, if you have nix installed multi-user,
+`/etc/nix.conf`
+
+---
+extra-experimental-features = flakes nix-command
+substituters = https://hydra.iohk.io https://iohk.cachix.org https://cache.nixos.org/
+trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= iohk.cachix.org-1:DpRUyj7h7V830dp/i6Nti+NEO2/nhblbov/8MW7Rqoo= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+---
+
+Start the nix develop shell from the project's top-level directory:
+
+    $ nix develop
+    [nix develop] $ stack build
+    ...
+
+And then work as usual.
+
+
+## Contact
+
+{{author-name}}{{^author-name}}Author name here{{/author-name}} <{{author-email}}{{^author-email}}example@example.com{{/author-email}}>
+
+{-# START_FILE LICENSE #-}
+Copyright (c) {{year}}{{^year}}2022{{/year}}, {{author-name}}{{^author-name}}Author name here{{/author-name}} <{{author-email}}{{^author-email}}Author email here{{/author-email}}>
+
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA
+OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+
+{-# START_FILE flake.nix #-}
+{ 
+  description = "A haskell project managed with nix and stack";
+
+  outputs = { self, nixpkgs }:
+    let pkgs = import nixpkgs { system = "x86_64-linux"; };
+        stackWithNix = "stack --nix --no-nix-pure --nix-shell-file=nix/stack-integration.nix";
+
+    in {
+      devShell.x86_64-linux = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          ghcid
+          haskellPackages.hasktags
+          hlint
+          stack
+        ];
+
+        shellHook = ''
+          # A prompt that will feel familiar to nix-shell users
+          export PS1="\n\[\033[1;32m\][nix develop:\w]\$\[\033[0m\] "
+
+          NIX_PATH="nixpkgs=${pkgs.path}"
+          # Needed to avoid nixpkgs-provided ghcid failure with an error like
+          #   'ghcid: fd:16: hGetLine: invalid argument (invalid byte sequence)'
+          #   see: <https://github.com/NixOS/nixpkgs/issues/62375>
+          export LC_ALL=C.UTF-8
+
+          # stack must be invoked with switches to make it work with nix. Here
+          # we alias the tools that will need to use stack.
+          alias stack='${stackWithNix}'
+          alias ghcid='ghcid --command="${stackWithNix} repl"'
+        '';
+      };
+    };
+}
+
+{-# START_FILE nix/stack-integration.nix #-}
+let
+  pkgs = import <nixpkgs> {};
+in
+
+# See https://docs.haskellstack.org/en/stable/nix_integration/#using-a-custom-shellnix-file
+{ ghc }:
+
+pkgs.haskell.lib.buildStackProject {
+  inherit ghc;
+  name = "haskell-stack-nix";
+  # System dependencies needed at compilation time
+  buildInputs = [ ];
+}
+
