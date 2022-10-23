@@ -205,11 +205,20 @@ PERFORMANCE OF THIS SOFTWARE.
   description = "A haskell project managed with nix and stack";
 
   outputs = { self, nixpkgs }:
-    let pkgs = import nixpkgs { system = "x86_64-linux"; };
-        stackWithNix = "stack --nix --no-nix-pure --nix-shell-file=nix/stack-integration.nix";
+    let
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
+
+      # Switches to configure stack Nix integration and target the correct nix
+      # shell script.
+      #
+      # - nix: Enable Nix support
+      # - no-nix-pure: Pass environment variables, like `NIX_PATH`
+      # - nix-shell-file: Specify the Nix file to use (otherwise it uses `shell.nix` by default)
+      stackWithNix = "stack --nix --no-nix-pure --nix-shell-file=nix/stack-integration.nix";
 
     in {
       devShell.x86_64-linux = pkgs.mkShell {
+        # Add non-Haskell dependencies here, like native libraries and tools
         buildInputs = with pkgs; [
           ghcid
           haskellPackages.hasktags
@@ -221,7 +230,13 @@ PERFORMANCE OF THIS SOFTWARE.
           # A prompt that will feel familiar to nix-shell users
           export PS1="\n\[\033[1;32m\][nix develop:\w]\$\[\033[0m\] "
 
+          # Configure the Nix path to our own `pkgs`, to ensure Stack-with-Nix uses
+          # the correct one rather than the global <nixpkgs> when looking for the
+          # right `ghc` argument to pass in `nix/stack-integration.nix`
+          # See https://nixos.org/nixos/nix-pills/nix-search-paths.html for more
+          # information
           NIX_PATH="nixpkgs=${pkgs.path}"
+
           # Needed to avoid nixpkgs-provided ghcid failure with an error like
           #   'ghcid: fd:16: hGetLine: invalid argument (invalid byte sequence)'
           #   see: <https://github.com/NixOS/nixpkgs/issues/62375>
