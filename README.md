@@ -11,18 +11,20 @@ My personal stack templates
 Stack can use a template to scaffold up a new project and has a facility to
 allow anyone to make and share templates. These are mine.
 
-    stack-generic    Simple Haskell project that builds with stack
-    stack-nix        Simple Haskell project that builds with stack, with or without nix.
-                     Uses modern nix flakes.
-    stack-nix-shell  Simple Haskell project that builds with stack, with or without nix.
-                     Uses classic nix-shell.
+The `basic-` project templates create a basic Haskell project structure
+The nix-based projects in this set all include `ghcid`, `hasktags` and `hlint`
 
+    template name                   build system    uses nix
+    --------------------------------------------------------------
+    basic-stack.hsfiles             stack           no
+    basic-stack-nix.hsfiles         stack           optional, flakes
+    basic-stack-nix-shell.hsfiles   stack           optional, nix-shell
 
 ## Development
 
 To create a project with one of these templates
 
-    $ stack new my-project github:dino-/stack-nix
+    $ stack new my-project github:dino-/basic-stack-nix
 
 
 ## Contact
