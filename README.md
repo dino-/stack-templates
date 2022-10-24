@@ -14,17 +14,17 @@ allow anyone to make and share templates. These are mine.
 The `basic-` project templates create a basic Haskell project structure
 The nix-based projects in this set all include `ghcid`, `hasktags` and `hlint`
 
-    template name                   build system    uses nix
-    --------------------------------------------------------------
-    basic-stack.hsfiles             stack           no
-    basic-stack-nix.hsfiles         stack           optional, flakes
-    basic-stack-nix-shell.hsfiles   stack           optional, nix-shell
+    template name             uses nix
+    ----------------------------------------------
+    basic.hsfiles             no
+    basic-nix.hsfiles         optional, flakes
+    basic-nix-shell.hsfiles   optional, nix-shell
 
 ## Development
 
 To create a project with one of these templates
 
-    $ stack new my-project github:dino-/basic-stack-nix
+    $ stack new my-project github:dino-/basic-nix
 
 
 ## Contact
