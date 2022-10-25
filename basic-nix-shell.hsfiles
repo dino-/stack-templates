@@ -1,89 +1,104 @@
-{-# START_FILE package.yaml #-}
+{-# START_FILE {{name}}.cabal #-}
+cabal-version: 2.2
+
 name: {{name}}
-version: '1.0'
-# synopsis:
-# description:
-license: ISC
+version: 1.0
+-- synopsis:
+-- description:
 author: {{author-name}}{{^author-name}}Author name here{{/author-name}}
 maintainer: {{author-email}}{{^author-email}}example@example.com{{/author-email}}
 copyright: {{year}}{{^year}}2022{{/year}} {{author-name}}{{^author-name}}Author name here{{/author-name}}
 category: {{category}}{{^category}}Unclassified{{/category}}
+license: ISC
+license-file: LICENSE
+build-type: Simple
 extra-source-files:
-- CHANGELOG.md
-- .gitignore
-- package.yaml
-- README.md
-# - stack.yaml
+  CHANGELOG.md
+  .gitignore
+  nix/stack-integration.nix
+  README.md
+  shell.nix
+  stack.yaml
 
-github: {{github-username}}/{{name}}
+source-repository head
+  type: git
+  location: https://github.com/{{github-username}}/{{name}}
 
-ghc-options:
-- -fwarn-tabs
-- -Wall
-- -Wcompat
-# - -Werror  # Around the time of lts-12.11 (ghc < 8.4.3), this is no longer recommended
-- -Wincomplete-record-updates
-- -Wincomplete-uni-patterns
-- -Wpartial-fields
-- -Wredundant-constraints
+common lang
+  default-language: Haskell2010
+  default-extensions:
+    BangPatterns
+    DeriveFoldable
+    DeriveFunctor
+    DeriveGeneric
+    DeriveLift
+    DeriveTraversable
+    EmptyCase
+    FlexibleContexts
+    FlexibleInstances
+    GeneralizedNewtypeDeriving
+    InstanceSigs
+    KindSignatures
+    LambdaCase
+    MultiParamTypeClasses
+    MultiWayIf
+    NamedFieldPuns
+    NumericUnderscores
+    OverloadedStrings
+    ScopedTypeVariables
+    StandaloneDeriving
+    TupleSections
+  ghc-options:
+    -fwarn-tabs
+    -Wall
+    -Wcompat
+    -- -Werror  -- Around the time of lts-12.11 (ghc >= 8.4.3), this is no longer recommended
+    -Wincomplete-record-updates
+    -Wincomplete-uni-patterns
+    -Wpartial-fields
+    -Wredundant-constraints
 
-default-extensions:
-- BangPatterns
-- DeriveFoldable
-- DeriveFunctor
-- DeriveGeneric
-- DeriveLift
-- DeriveTraversable
-- EmptyCase
-- FlexibleContexts
-- FlexibleInstances
-- GeneralizedNewtypeDeriving
-- InstanceSigs
-- KindSignatures
-- LambdaCase
-- MultiParamTypeClasses
-- MultiWayIf
-- NamedFieldPuns
-- NumericUnderscores
-- OverloadedStrings
-- ScopedTypeVariables
-- StandaloneDeriving
-- TupleSections
+library
+  import: lang
+  exposed-modules:
+      Example
+  -- other-modules:
+  --     Paths_fixme
+  hs-source-dirs:
+    src/lib
+  build-depends:
+      base >=3 && <5
 
-dependencies:
-- base >=3 && <5
+executable {{name}}
+  import: lang
+  main-is: Main.hs
+  -- other-modules:
+  --     Paths_fixme
+  hs-source-dirs:
+    src/app
+  build-depends:
+      base >=3 && <5
+    , {{name}}
 
-library:
-  source-dirs: src/lib
-  dependencies: []
-
-executables:
-  {{name}}:
-    source-dirs: src/app
-    main: Main.hs
-    dependencies:
-    - {{name}}
-
-tests:
-  {{name}}-test-suite:
-    source-dirs: src/test
-    main: Main.hs
-    dependencies:
-    - {{name}}
-    - tasty
-    - tasty-hunit
-    - tasty-quickcheck
-    ghc-options:
-    - -rtsopts
-    - -threaded
-    - -with-rtsopts=-N
+test-suite basic-wrk-test-suite
+  import: lang
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  -- other-modules:
+  --     Paths_fixme
+  hs-source-dirs:
+    src/test
+  ghc-options: -rtsopts -threaded -with-rtsopts=-N
+  build-depends:
+      base >=3 && <5
+    , {{name}}
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
 
 {-# START_FILE .gitignore #-}
 # stack uses this directory for build artifacts
 /.stack-work/
-
-# stack generates the cabal file from `package.yaml` with hpack
-/*.cabal
 
 {-# START_FILE src/lib/Example.hs #-}
 -- | An example module.
