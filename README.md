@@ -32,3 +32,8 @@ To create a project with one of these templates
 ### Authors
 
 Dino Morelli <dino@ui3.info>
+
+The templates here that integrate Stack with (optional) Nix were adapted from
+insights I gather from an excellent blog post from Tweag:
+
+[Smooth, non-invasive Haskell Stack and Nix shell integration]<https://www.tweag.io/blog/2022-06-02-haskell-stack-nix-shell/>
