@@ -179,11 +179,10 @@ To use it with nix, make sure you have nix installed on your system.
 Start the nix shell from the project's top-level directory:
 
     $ nix-shell
-    [nix-shell] $ stack build
+    [nix-shell]$ stack build
     ...
 
 And then work as usual.
-
 
 ## Contact
 
@@ -213,9 +212,10 @@ let
   # Switches to configure stack Nix integration and target the correct nix
   # shell script.
   #
-  # - nix: Enable Nix support
-  # - no-nix-pure: Pass environment variables, like `NIX_PATH`
-  # - nix-shell-file: Specify the Nix file to use (otherwise it uses `shell.nix` by default)
+  # Why these switches? Here:
+  # - --nix: Enable Nix support
+  # - --no-nix-pure: Pass environment variables, like `NIX_PATH` (set below, in shellHook)
+  # - --nix-shell-file: Specify the Nix file to use (otherwise it uses `shell.nix` by default)
   stackWithNix = "stack --nix --no-nix-pure --nix-shell-file=nix/stack-integration.nix";
 in
 
