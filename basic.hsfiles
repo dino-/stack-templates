@@ -97,6 +97,9 @@ test-suite basic-wrk-test-suite
 # stack uses this directory for build artifacts
 /.stack-work/
 
+# Made by 'hasktags --ctags .'
+tags
+
 {-# START_FILE src/lib/Example.hs #-}
 -- | An example module.
 module Example
