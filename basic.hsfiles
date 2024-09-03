@@ -56,13 +56,15 @@ common lang
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
+  -- other-modules:
+  --   Paths_{{name}}
+  -- autogen-modules:
+  --   Paths_{{name}}
 
 library
   import: lang
   exposed-modules:
       Example
-  -- other-modules:
-  --     Paths_fixme
   hs-source-dirs:
     src/lib
   build-depends:
@@ -71,8 +73,6 @@ library
 executable {{name}}
   import: lang
   main-is: Main.hs
-  -- other-modules:
-  --     Paths_fixme
   hs-source-dirs:
     src/app
   build-depends:
@@ -83,8 +83,6 @@ test-suite basic-wrk-test-suite
   import: lang
   type: exitcode-stdio-1.0
   main-is: Main.hs
-  -- other-modules:
-  --     Paths_fixme
   hs-source-dirs:
     src/test
   ghc-options: -rtsopts -threaded -with-rtsopts=-N
