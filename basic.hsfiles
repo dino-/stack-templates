@@ -35,6 +35,7 @@ common lang
     FlexibleContexts
     FlexibleInstances
     GeneralizedNewtypeDeriving
+    ImportQualifiedPost
     InstanceSigs
     KindSignatures
     LambdaCase
