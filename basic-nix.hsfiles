@@ -37,6 +37,7 @@ common lang
     FlexibleContexts
     FlexibleInstances
     GeneralizedNewtypeDeriving
+    ImportQualifiedPost
     InstanceSigs
     KindSignatures
     LambdaCase
@@ -57,41 +58,38 @@ common lang
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
+  build-depends:
+      base >=3 && <5
+  -- other-modules:
+  --   Paths_{{name}}
+  -- autogen-modules:
+  --   Paths_{{name}}
 
 library
   import: lang
   exposed-modules:
       Example
-  -- other-modules:
-  --     Paths_fixme
   hs-source-dirs:
     src/lib
-  build-depends:
-      base >=3 && <5
+  -- build-depends:
 
 executable {{name}}
   import: lang
   main-is: Main.hs
-  -- other-modules:
-  --     Paths_fixme
   hs-source-dirs:
     src/app
   build-depends:
-      base >=3 && <5
-    , {{name}}
+      {{name}}
 
 test-suite basic-wrk-test-suite
   import: lang
   type: exitcode-stdio-1.0
   main-is: Main.hs
-  -- other-modules:
-  --     Paths_fixme
   hs-source-dirs:
     src/test
   ghc-options: -rtsopts -threaded -with-rtsopts=-N
   build-depends:
-      base >=3 && <5
-    , {{name}}
+      {{name}}
     , tasty
     , tasty-hunit
     , tasty-quickcheck
@@ -99,6 +97,9 @@ test-suite basic-wrk-test-suite
 {-# START_FILE .gitignore #-}
 # stack uses this directory for build artifacts
 /.stack-work/
+
+# Made by 'hasktags --ctags .'
+tags
 
 {-# START_FILE src/lib/Example.hs #-}
 -- | An example module.
