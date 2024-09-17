@@ -56,6 +56,8 @@ common lang
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
+  build-depends:
+      base >=3 && <5
   -- other-modules:
   --   Paths_{{name}}
   -- autogen-modules:
@@ -67,8 +69,7 @@ library
       Example
   hs-source-dirs:
     src/lib
-  build-depends:
-      base >=3 && <5
+  -- build-depends:
 
 executable {{name}}
   import: lang
@@ -76,8 +77,7 @@ executable {{name}}
   hs-source-dirs:
     src/app
   build-depends:
-      base >=3 && <5
-    , {{name}}
+      {{name}}
 
 test-suite basic-wrk-test-suite
   import: lang
@@ -87,8 +87,7 @@ test-suite basic-wrk-test-suite
     src/test
   ghc-options: -rtsopts -threaded -with-rtsopts=-N
   build-depends:
-      base >=3 && <5
-    , {{name}}
+      {{name}}
     , tasty
     , tasty-hunit
     , tasty-quickcheck
